@@ -1,11 +1,3 @@
-"""
-╔══════════════════════════════════════════════════════════════╗
-║   🎲 Simulador de Probabilidade — Dados & Moedas             ║
-║   Requer: pip install customtkinter                          ║
-║   Rodar:  python simulador_probabilidade.py                  ║
-╚══════════════════════════════════════════════════════════════╝
-"""
-
 import customtkinter as ctk
 import tkinter as tk
 import random
@@ -152,18 +144,7 @@ def calcular_desvio_absoluto_medio(teorica: dict, experimental: dict) -> float:
 # ══════════════════════════════════════════════════════════════════════════════
 
 class GraficoBarras(tk.Canvas):
-    """
-    Gráfico de barras duplas desenhado diretamente no Canvas do Tkinter.
 
-    Para cada resultado possível, exibe duas barras lado a lado:
-      ▮ Barra AZUL    → probabilidade teórica (calculada matematicamente)
-      ▮ Barra COLORIDA → probabilidade experimental (obtida nas simulações)
-
-    A cor da barra experimental indica o desvio em relação à teoria:
-      🟢 Verde   → desvio < 4%   (muito próximo)
-      🟡 Amarelo → desvio 4–9%  (aceitável)
-      🔴 Vermelho → desvio > 9%  (longe — tente mais simulações)
-    """
 
     def __init__(self, master, **kw):
         super().__init__(master, bg=FUNDO_APP, highlightthickness=0, **kw)
@@ -310,7 +291,7 @@ class PainelFormulas(ctk.CTkFrame):
                      corner_radius=0).pack(fill="x", padx=14, pady=(0, 6))
 
         self._lbl = ctk.CTkLabel(self, text="",
-                                  font=ctk.CTkFont("Courier New", 11),
+                                  font=ctk.CTkFont("Times new roman", 14),
                                   text_color=AREIA, justify="left",
                                   wraplength=720, anchor="w")
         self._lbl.pack(anchor="w", padx=14, pady=(0, 10), fill="x")
@@ -369,7 +350,7 @@ class App(ctk.CTk):
 
     def __init__(self):
         super().__init__()
-        self.title("🎲  Simulador de Probabilidade — Dados & Moedas")
+        self.title("🎲  Simulador de Probabilidade — Coins & Dice")
         self.geometry("1180x820")
         self.minsize(980, 680)
         self.configure(fg_color=FUNDO_APP)
@@ -390,8 +371,8 @@ class App(ctk.CTk):
         hdr.pack_propagate(False)
 
         ctk.CTkLabel(hdr,
-                     text="🎲  Simulador de Probabilidade  —  Dados & Moedas",
-                     font=ctk.CTkFont("Georgia", 22, "bold"),
+                     text="🎲  Simulador de Probabilidade  —  Coins & Dice",
+                     font=ctk.CTkFont("Georgia", 26, "bold"),
                      text_color=AREIA
                      ).pack(side="left", padx=24, pady=14)
 
@@ -434,7 +415,7 @@ class App(ctk.CTk):
 
         # 2. Título do gráfico
         ctk.CTkLabel(main,
-                     text="📈  Gráfico  —  Barra AZUL = Teórico   |   Barra COLORIDA = Experimental",
+                     text="📈  Gráfico ",
                      font=ctk.CTkFont("Georgia", 12, "bold"),
                      text_color=LARANJA
                      ).pack(anchor="w", pady=(0, 6))
@@ -499,9 +480,6 @@ class App(ctk.CTk):
 
         # ── PASSO 1 — Tipo ──
         label("Passo 1 — O que você quer lançar?")
-        label("  Dados: gera somas aleatórias por lançamento", dim=True)
-        label("  Moedas: conta quantas caras saem por rodada", dim=True)
-
         self._var_modo = ctk.StringVar(value="🎲  Dados")
         ctk.CTkSegmentedButton(
             side,
@@ -519,10 +497,10 @@ class App(ctk.CTk):
 
         # ── PASSO 2 — Quantidade ──
         self._lbl_passo2 = ctk.CTkLabel(side,
-                                         text="Passo 2 — Quantos dados? (arraste o slider)",
+                                         text="Passo 2 — Quantos dados? ",
                                          font=ctk.CTkFont(size=11), text_color=AREIA)
         self._lbl_passo2.pack(anchor="w", padx=16)
-        label("  O valor selecionado aparece em destaque abaixo", dim=True)
+
 
         # Número em destaque (mostra o valor exato do slider)
         self._lbl_valor_qtd = ctk.CTkLabel(side, text="2",
@@ -557,8 +535,7 @@ class App(ctk.CTk):
                                          text="Passo 3 — Quantas faces tem cada dado?",
                                          font=ctk.CTkFont(size=11), text_color=AREIA)
         self._lbl_passo3.pack(anchor="w", padx=16)
-        label("  d4=4 faces  d6=6 faces  d8=8 faces  d20=20 faces", dim=True)
-        label("  Ignore este passo se usar moedas", dim=True)
+
 
         self._var_faces = ctk.StringVar(value="6")
         self._seg_faces = ctk.CTkSegmentedButton(
@@ -576,8 +553,7 @@ class App(ctk.CTk):
 
         # ── PASSO 4 — Simulações ──
         label("Passo 4 — Quantas simulações executar?")
-        label("  Mais simulações = resultado mais fiel à teoria", dim=True)
-        label("  Recomendado: pelo menos 1.000", dim=True)
+
 
         # Botões de atalho rápido
         for grupo in [(100, 500, 1000), (5000, 10000, 50000)]:
@@ -592,7 +568,7 @@ class App(ctk.CTk):
                     command=lambda v=n: self._definir_simulacoes(v)
                 ).pack(side="left", padx=2)
 
-        label("  Ou digite um valor personalizado:", dim=True)
+        label(" Digite um valor personalizado:", dim=True)
         self._var_sim = tk.StringVar(value="1000")
         ctk.CTkEntry(side,
                      textvariable=self._var_sim,
@@ -652,12 +628,12 @@ class App(ctk.CTk):
         eh_dado = self._var_modo.get().startswith("🎲")
 
         if eh_dado:
-            self._lbl_passo2.configure(text="Passo 2 — Quantos dados? (arraste o slider)")
+            self._lbl_passo2.configure(text="Passo 2 — Quantos dados? ")
             self._slider.configure(to=6, number_of_steps=5)
             self._lbl_max.configure(text="máx: 6")
             maximo = 6
         else:
-            self._lbl_passo2.configure(text="Passo 2 — Quantas moedas? (arraste o slider)")
+            self._lbl_passo2.configure(text="Passo 2 — Quantas moedas? ")
             self._slider.configure(to=8, number_of_steps=7)
             self._lbl_max.configure(text="máx: 8")
             maximo = 8
