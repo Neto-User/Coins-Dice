@@ -5,21 +5,7 @@
 Simulador didático que compara a **probabilidade teórica** (calculada matematicamente)
 com a **probabilidade experimental** (obtida por simulação de Monte Carlo).
 
----
 
-## Requisito
-
-```bash
-pip install customtkinter
-```
-
-## Como executar
-
-```bash
-python main.py
-```
-
----
 
 ## Estrutura do projeto
 
